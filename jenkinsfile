@@ -24,5 +24,3 @@ pipeline {
         }
     }
 }     
-
-# this is feature 2 branch change
