@@ -3,8 +3,8 @@ pipeline {
     
     environment {
         LABS = credentials('labcreds')
-        //JAVA_HOME = '/opt/bitnami/java'  // Set your JAVA_HOME path here.
-        //PATH = "${env.JAVA_HOME}/bin:${env.PATH}"  // Add Java binaries to PATH
+        JAVA_HOME = '/opt/bitnami/java'
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
     
     stages {
@@ -17,7 +17,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh '/bitnami/jenkins/home/.local/bin/pipenv run pytest'
+                sh '''
+                export JAVA_HOME=/opt/bitnami/java
+                export PATH=$JAVA_HOME/bin:$PATH
+                echo $JAVA_HOME
+                java -version
+                ~/.local/bin/pipenv run pytest -v
+                '''
             }
         }
         stage('Package') {
