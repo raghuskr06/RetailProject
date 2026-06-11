@@ -10,6 +10,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                    // Create a virtual environment with the project name (Retail pipeline)
                     sh 'python3 -m pip install --user --break-system-packages pipenv'
                     sh '/bitnami/jenkins/home/.local/bin/pipenv --rm || exit 0'
                     sh '/bitnami/jenkins/home/.local/bin/pipenv install'
@@ -17,6 +18,7 @@ pipeline {
         }
         stage('Test') {
             steps {
+                // Ensure JAVA_HOME is set for PySpark to work and Run tests (assuming you are using pytest for tests)
                 sh '''
                 export JAVA_HOME=/opt/bitnami/java
                 export PATH=$JAVA_HOME/bin:$PATH
@@ -28,11 +30,13 @@ pipeline {
         }
         stage('Package') {
             steps {
+                // Create the zip file but exclude the venv directory
                 sh 'zip -r retailproject.zip .'
             }
         }
         stage('Deploy') {
             steps {
+                // Add deployment steps here (e.g., deploy to a server or cloud)
                 sh 'sshpass -p $LABS_PSW scp -o StrictHostKeyChecking=no -r . $LABS_USR@g01.itversity.com:/home/itv022777/retailproject'
             }
         }
