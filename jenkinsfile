@@ -35,15 +35,15 @@ pipeline {
             }
         }
         stage('Deploy') {
-    steps {
+            steps {
         sh '''
         sshpass -p $LABS_PSW scp \
         -o StrictHostKeyChecking=no \
         retailproject.zip \
         $LABS_USR@g01.itversity.com:/home/itv022777/
         '''
-    }
-}
+            }
+        }
     }
 }
 
